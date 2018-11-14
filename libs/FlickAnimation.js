@@ -6,8 +6,9 @@ const density = PixelRatio.get()
 const TIME_CONTANT = 325
 
 export default class FlickAnimation {
-  constructor(animation, min, max) {
+  constructor(animation, min, max, onFlickEnd) {
     this.onUpdate = this.onUpdate.bind(this)
+    this.onFlickEnd = onFlickEnd;
 
     this._animation = animation
     this._min = min
@@ -17,6 +18,7 @@ export default class FlickAnimation {
   _scroll(toValue) {
     const value = clamp(toValue, this._min, this._max)
     this._animation.setValue(value)
+    this._value = value;
 
     if (value === this._min || value === this._max) {
       this.stop()
@@ -43,6 +45,7 @@ export default class FlickAnimation {
       Math.exp(-elapsedTime / TIME_CONTANT)
 
     if (Math.abs(delta) < 0.5) {
+      this.onFlickEnd(Math.abs(this._value));
       return
     }
 
