@@ -29,6 +29,8 @@ class SlidingUpPanel extends React.Component {
     onDragEnd: PropTypes.func,
     onMomentumEnd: PropTypes.func,
     onRequestClose: PropTypes.func,
+    onBottomReached: PropTypes.func,
+    onTopReached: PropTypes.func,
     startCollapsed: PropTypes.bool,
     allowMomentum: PropTypes.bool,
     allowDragging: PropTypes.bool,
@@ -46,6 +48,8 @@ class SlidingUpPanel extends React.Component {
     onDragEnd: () => {},
     onRequestClose: () => {},
     onMomentumEnd: () => {},
+    onTopReached: () => {},
+    onBottomReached: () => {},
     allowMomentum: true,
     allowDragging: true,
     showBackdrop: true,
@@ -80,7 +84,7 @@ class SlidingUpPanel extends React.Component {
 
     this._animatedValueY = this.state.visible ? collapsedPosition : -bottom
     this._translateYAnimation = new Animated.Value(this._animatedValueY)
-    this._flick = new FlickAnimation(this._translateYAnimation, -top, -bottom, this.props.onMomentumEnd)
+    this._flick = new FlickAnimation(this._translateYAnimation, -top, -bottom, this.props.onMomentumEnd, this.props.onBottomReached, this.props.onTopReached)
 
     this._panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: this._onMoveShouldSetPanResponder.bind(this),
