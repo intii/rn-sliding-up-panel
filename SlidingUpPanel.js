@@ -197,7 +197,7 @@ class SlidingUpPanel extends React.Component {
   }
 
   _isClosedAndIsATapEvent(gestureState) {
-    if (this._isAtBottom && gestureState.dy >= -1.5 && gestureState.dy <= 1.5) {
+    if (gestureState.dy >= -1.5 && gestureState.dy <= 1.5) {
       return false
     } else {
       return true
