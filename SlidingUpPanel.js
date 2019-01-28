@@ -64,7 +64,6 @@ class SlidingUpPanel extends React.Component {
     this._renderBackdrop = this._renderBackdrop.bind(this)
     this._isInsideDraggableRange = this._isInsideDraggableRange.bind(this)
     this._triggerAnimation = this._triggerAnimation.bind(this)
-    this._isClosedAndIsATapEvent = this._isClosedAndIsATapEvent.bind(this)
 
     this.transitionTo = this.transitionTo.bind(this)
 
@@ -88,8 +87,7 @@ class SlidingUpPanel extends React.Component {
     this._flick = new FlickAnimation(this._translateYAnimation, -top, -bottom, this.props.onMomentumEnd, this.props.onBottomReached, this.props.onTopReached)
 
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponderCapture: this._onStartShouldSetPanResponderCapture.bind(this),
-      onMoveShouldSetPanResponderCapture: this._onMoveShouldSetPanResponderCapture.bind(this),
+      onMoveShouldSetPanResponder: this._onMoveShouldSetPanResponder.bind(this),
       onPanResponderGrant: this._onPanResponderGrant.bind(this),
       onPanResponderMove: this._onPanResponderMove.bind(this),
       onPanResponderRelease: this._onPanResponderRelease.bind(this),
@@ -139,13 +137,8 @@ class SlidingUpPanel extends React.Component {
     }
   }
 
-  _onStartShouldSetPanResponderCapture(evt, gestureState) {
-    return false
-  }
-
-  _onMoveShouldSetPanResponderCapture(evt, gestureState) {
+  _onMoveShouldSetPanResponder(evt, gestureState) {
     return (
-      this._isClosedAndIsATapEvent(gestureState) &&
       this.props.allowDragging &&
       this._isInsideDraggableRange() &&
       Math.abs(gestureState.dy) > MINIMUM_DISTANCE_THRESHOLD
@@ -194,14 +187,6 @@ class SlidingUpPanel extends React.Component {
   // eslint-disable-next-line no-unused-vars
   _onPanResponderTerminate(evt, gestureState) {
     debugger;
-  }
-
-  _isClosedAndIsATapEvent(gestureState) {
-    if (gestureState.dy >= -1.5 && gestureState.dy <= 1.5) {
-      return false
-    } else {
-      return true
-    }
   }
 
   _isInsideDraggableRange() {
